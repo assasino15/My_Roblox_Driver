@@ -2,7 +2,7 @@ name: Build Kernel Driver
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -10,15 +10,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Check out code
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Add msbuild to path
-      uses: microsoft/setup-msbuild@v1.3
+    - name: Run MSBuild
+      uses: microsoft/vs-dev-shell@v1
+      with:
+        devCmd: true
+        arch: "x64"
+        vsVersion: 'latest'
+        run: |
+          msbuild KernelDriver.vcxproj /p:Configuration=Release /p:Platform=x64
 
-    - name: Build the driver
-      run: msbuild KernelDriver.vcxproj /p:Configuration=Release /p:Platform=x64
-      
     - name: Upload driver artifact
       uses: actions/upload-artifact@v4
       with:
