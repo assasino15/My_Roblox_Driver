@@ -10,13 +10,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Run MSBuild using Dev-Shell
-      uses: microsoft/setup-vs-dev-shell@v1
-      with:
-        run: msbuild KernelDriver.vcxproj /p:Configuration=Release /p:Platform=x64
+    - name: Build the driver using MSBuild
+      shell: cmd
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        msbuild KernelDriver.vcxproj /p:Configuration=Release /p:Platform=x64
 
     - name: Upload driver artifact
       uses: actions/upload-artifact@v4
