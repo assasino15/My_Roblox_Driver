@@ -13,14 +13,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Run MSBuild
-      uses: microsoft/vs-dev-shell@v1
+    - name: Run MSBuild using Dev-Shell
+      uses: microsoft/setup-vs-dev-shell@v1
       with:
-        devCmd: true
-        arch: "x64"
-        vsVersion: 'latest'
-        run: |
-          msbuild KernelDriver.vcxproj /p:Configuration=Release /p:Platform=x64
+        run: msbuild KernelDriver.vcxproj /p:Configuration=Release /p:Platform=x64
 
     - name: Upload driver artifact
       uses: actions/upload-artifact@v4
